@@ -16,15 +16,16 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import Slide from '@material-ui/core/Slide';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import MobileEditMenu from '../MobileEditMenu';
+import DialogBox from '../DialogBox/DialogBox';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -79,9 +80,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction='up' ref={ref} {...props} />;
+// });
 
 export default function Employee() {
   // list of employees got from API
@@ -90,9 +91,11 @@ export default function Employee() {
   const [deletedRow, setDeletedRow] = useState([]);
   // for the dialog box
   const [open, setOpen] = useState(false);
+  const [row, setRow] = useState({});
 
-  const handleClickOpen = () => {
+  const handleClickOpen = row => {
     setOpen(true);
+    setRow(row);
   };
 
   const handleClose = () => {
@@ -157,6 +160,12 @@ export default function Employee() {
 
   return (
     <>
+      <DialogBox
+        open={open}
+        handleDelete={handleDelete}
+        handleClose={handleClose}
+        row={row}
+      />
       <Typography variant='h3' className={classes.heading}>
         Employees
       </Typography>
@@ -188,11 +197,12 @@ export default function Employee() {
                       >
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={handleClickOpen}>
+                      <IconButton onClick={handleClickOpen(row)}>
                         <DeleteIcon />
                       </IconButton>
+
                       {/* Dialog box code starts*/}
-                      <Dialog
+                      {/* <Dialog
                         open={open}
                         TransitionComponent={Transition}
                         keepMounted
@@ -223,7 +233,7 @@ export default function Employee() {
                             Yes
                           </IconButton>
                         </DialogActions>
-                      </Dialog>
+                      </Dialog> */}
                       {/* Dialog box code ends*/}
                     </Hidden>
                     <Hidden smUp>
